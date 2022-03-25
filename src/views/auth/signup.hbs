@@ -1,0 +1,91 @@
+<div class="container mt-5"> <br>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-12">
+            <div class="card shadow rounded-pill">
+                <div class="card-body">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-4">
+                            <img src="https://juanluisn.blob.core.windows.net/imagenes/undraw_online_ad_re_ol62.png"
+                                class="mx-auto d-block img-fluid">
+                        </div>
+                        <div class="col-md-8 pe-5">
+                            <h4 class="mt-2">Sign up</h4>
+                            <small>¡Create your account and participate in our community by asking and
+                                answering!</small>
+                            <hr class="mb-3">
+                            <form action="/signup" method="POST">
+                                <div class="mb-3 pe-2">
+                                    <label for="">Username:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-tag"></i>
+                                        </span>
+                                        <input type="text" name="username" placeholder="Username" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 pe-2">
+                                    <label for="">Full name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-signature"></i>
+                                        </span>
+                                        <input type="text" name="fullname" placeholder="Full name" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 pe-2">
+                                    <label for="">Email:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" name="email" placeholder="Email" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 pe-2">
+                                    <label for="">Password:</label>
+                                    <label class="text-danger d-none" id="higherPass"><small><i
+                                                class="fas fa-exclamation-circle"></i>
+                                            The password must be greater than 8 characters.</small></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                        <input type="password" id="password" name="password" placeholder="Password"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 d-grid gap-2 col-8 mx-auto">
+                                    <button type="submit" id="btnsave" class="btn btn-dark rounded-pill">Sign
+                                        up</button>
+                                </div>
+                            </form>
+                            <hr>
+                            <p class="text-center">¿Already have an account?</p>
+                            <div class="mb-3 d-grid gap-2 col-8 mx-auto">
+                                <a href="/signin" class="btn btn-dark rounded-pill">Sign in</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const password = document.getElementById("password")
+    const btnsave = document.getElementById("btnsave")
+
+    btnsave = addEventListener("input", () => {
+        if (password.value.length < 8) {
+            higherPass.classList.remove("d-none")
+            btnsave.disabled = true
+        } else {
+            higherPass.classList.add("d-none")
+            btnsave.disabled = false
+        }
+    })
+</script>
