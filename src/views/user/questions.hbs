@@ -1,0 +1,55 @@
+<div class="container mt-4 bg-white rounded h-auto">
+    <h2 class="text-center pt-4">MY QUESTIONS</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-dark me-md-2 rounded-pill" type="button"><i class="fas fa-plus-square"></i> Post
+            question</button>
+    </div>
+    <hr>
+    <div class="input-group w-75 mx-auto my-4">
+        <span class="input-group-text">
+            <i class="fas fa-search"></i>
+        </span>
+        <input type="text" name="username" placeholder="Search question" class="form-control">
+    </div>
+    <div class="row px-5">
+        <div class="col-12 border-bottom border-dark border-2">
+            <div class="row">
+                <div class="col-6">
+                    <h5>Question</h5>
+                </div>
+                <div class="col-2">
+                    Views
+                </div>
+                <div class="col-2 ps-1">
+                    Answers
+                </div>
+                <div class="col-2">
+                    Options
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            {{#each questions}}
+            <div class="row">
+                <div class="col-6">
+                    <a href="details-question={{id}}" class="text-decoration-none">{{question}}</a>
+                </div>
+                <div class="col-2">
+                    <p>{{views}}</p>
+                </div>
+                <div class="col-2">
+                    <p>{{answers}}</p>
+                </div>
+                <div class="col-2">
+                    <div class="btn-group-vertical">
+                        <button class="btn btn-dark rounded-pill h-auto mb-2"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-danger rounded-pill h-auto mb-2"><i class="fas fa-trash-alt"></i>
+                            Delete</button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <br>
+</div>
