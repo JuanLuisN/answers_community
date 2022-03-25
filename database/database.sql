@@ -29,10 +29,10 @@ insert into categories values
 (null, 'android'),
 (null, 'sql'),
 (null, 'mysql'),
-(null, 'base-de-datos')
+(null, 'base-de-datos'),
 (null, 'css'),
 (null, 'laravel'),
-(null, 'bootstrap')
+(null, 'bootstrap');
 
 create table questions (
     id int primary key auto_increment,
@@ -40,7 +40,7 @@ create table questions (
     question varchar(100),
     description TEXT,
     views int,
-    fk_category int
+    fk_category int,
     foreign key(fk_user)references users(id),
     foreign key(fk_category)references categories(id)
 );
