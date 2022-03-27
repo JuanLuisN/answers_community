@@ -1,7 +1,8 @@
 <div class="container mt-4 bg-white rounded h-auto">
     <h2 class="text-center pt-4">MY QUESTIONS</h2>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-dark me-md-2 rounded-pill" type="button"><i class="fas fa-plus-square"></i> Post
+        <button class="btn btn-dark me-md-2 rounded-pill" type="button" data-bs-toggle="modal"
+            data-bs-target="#addQuestion"><i class="fas fa-plus-square"></i> Post
             question</button>
     </div>
     <hr>
@@ -11,6 +12,7 @@
         </span>
         <input type="text" name="username" placeholder="Search question" class="form-control">
     </div>
+    {{#if questions}}
     <div class="row px-5">
         <div class="col-12 border-bottom border-dark border-2">
             <div class="row">
@@ -42,14 +44,25 @@
                 </div>
                 <div class="col-2">
                     <div class="btn-group-vertical">
-                        <button class="btn btn-dark rounded-pill h-auto mb-2"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="btn btn-danger rounded-pill h-auto mb-2"><i class="fas fa-trash-alt"></i>
+                        <button class="btn btn-dark rounded-pill h-auto mb-2" data-bs-toggle="modal"
+                            data-bs-target="#editQuestion{{id}}"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-danger rounded-pill h-auto mb-2" data-bs-toggle="modal"
+                            data-bs-target="#deleteQuestion{{id}}"><i class="fas fa-trash-alt"></i>
                             Delete</button>
                     </div>
                 </div>
             </div>
+            {{>userComponents/questionModals/edit}}
+            {{>userComponents/questionModals/delete}}
             {{/each}}
         </div>
     </div>
+    {{else}}
+    <div class="my-5 text-center">
+        <h2>You have no questions posted</h2>
+        <p>¡Post a new question!</p>
+    </div>
+    {{/if}}
     <br>
 </div>
+{{>userComponents/questionModals/add}}

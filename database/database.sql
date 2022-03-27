@@ -7,7 +7,7 @@ create table users (
     username varchar(100),
     fullname varchar(100),
     email varchar(100),
-    password varchar(255),
+    password varchar(255)
 );
 
 create table categories (
@@ -51,6 +51,22 @@ create table answers (
     fk_question int,
     answer TEXT,
     votes int,
+    foreign key(fk_user)references users(id),
+    foreign key(fk_question)references questions(id)
+);
+
+create table answers_votes(
+    fk_answer int primary key,
+    fk_question int,
+    fk_user int,
+    foreign key(fk_user)references users(id),
+    foreign key(fk_question)references questions(id),
+    foreign key(fk_answer)references answers(id)
+);
+
+create table questions_views(
+    fk_user int primary key,
+    fk_question int,
     foreign key(fk_user)references users(id),
     foreign key(fk_question)references questions(id)
 );

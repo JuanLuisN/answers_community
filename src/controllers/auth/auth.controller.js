@@ -27,7 +27,7 @@ controller.editProfile = async (req, res) => {
             res.redirect('/profile')
         } else {
             const existsemail = await helpers.emailExists(req.body.email)
-            if(!existsemail){    
+            if(!existsemail){
                 await connection.query('update users set ? where id = ?', [req.body, req.user.id])
                 req.flash("success_msg", "Account edited successfully")
                 console.log(req.body)
@@ -35,7 +35,7 @@ controller.editProfile = async (req, res) => {
             } else {
                 req.flash("error_msg", "The email is already registered")
                 res.redirect('/profile')
-            }      
+            }
         }
     } catch (error) {
         console.log(error)

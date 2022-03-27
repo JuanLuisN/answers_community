@@ -1,0 +1,83 @@
+<div class="container mt-4 pt-2 bg-white rounded h-auto">
+    <section class="bg-light p-1 rounded">
+        <h2 class="text-justify pt-5">{{question}}</h2>
+        <p class="text-end">
+            <span class="me-4 text-secondary">
+                <i class="fas fa-eye"></i> Views: <span class="text-dark">{{views}}</span>
+            </span>
+            <span class="me-4 text-secondary">
+                <i class="fas fa-tags"></i> Category: <span class="text-dark">{{category}}</span>
+            </span>
+            <span class="me-4 text-secondary">
+                <i class="fas fa-user"></i> Posted by: <span class="text-dark">{{username}}</span>
+            </span>
+        </p>
+        <hr>
+        <p class="my-5">{{description}}</p>
+        <hr>
+    </section>
+    {{!-- Section answers --}}
+    <section>
+        <h2 class="mb-3">Answers</h2>
+        {{#each answers}}
+        <div class="row mt-2 bg-light py-3">
+            <div class="col-1 d-grid gap-2 mx-auto">
+                <a href="" class="btn btn-dark btn-sm mb-2 rounded-pill"><i class="fas fa-thumbs-up"></i></a>
+                <a href="" class="btn btn-dark btn-sm rounded-pill"><i class="fas fa-thumbs-down"></i></a>
+            </div>
+            <div class="col-11">
+                <h3>{{answer}}</h3>
+                <p class="text-end">
+                    <span class="me-4 text-secondary">
+                        <i class="fas fa-thumbs-up"></i> Votes: <span class="text-dark">{{votes}}</span>
+                    </span>
+                    <span class="me-4 text-secondary">
+                        <i class="fas fa-user"></i> Posted by: <span class="text-dark">{{username}}</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        {{else}}
+        <div class="my-5 text-center">
+            <h2>You have no answers posted</h2>
+            <p>¡Post a new answer!</p>
+        </div>
+        {{/each}}
+    </section>
+    <hr>
+    {{!-- Section add answer --}}
+    <section class="mt-5">
+        <div class="col-10 mx-auto">
+            <div class="card shadow">
+                <div class="card-header">
+                    ADD ANSWER
+                </div>
+                <div class="card-body">
+                    <form action="/myquestions/edit/{{id}}" method="POST">
+                        <div class="mb-3 pe-2">
+                            <label for="">Question:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                                <input type="text" name="question" placeholder="Question" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 pe-2">
+                            <label for="">Description:</label>
+                            <div class="input-group">
+                                <textarea type="text" name="description" placeholder="Description" cols="30" rows="10"
+                                    class="form-control" required></textarea>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button type="submit" class="btn btn-dark mx-auto">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+</div>
+{{>userComponents/questionModals/add}}
