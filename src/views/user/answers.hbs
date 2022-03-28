@@ -1,29 +1,24 @@
 <div class="container mt-4 bg-white rounded h-auto">
-    <h2 class="text-center pt-4">MY QUESTIONS</h2>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-dark me-md-2 rounded-pill" type="button" data-bs-toggle="modal"
-            data-bs-target="#addQuestion"><i class="fas fa-plus-square"></i> Post
-            question</button>
-    </div>
+    <h2 class="text-center pt-4">MY ANSWERS</h2>
     <hr>
     <div class="input-group w-75 mx-auto my-4">
         <span class="input-group-text">
             <i class="fas fa-search"></i>
         </span>
-        <input type="text" placeholder="Search question" class="form-control">
+        <input type="text" placeholder="Search answer" class="form-control">
     </div>
-    {{#if questions}}
+    {{#if answers}}
     <div class="row px-5">
         <div class="col-12 border-bottom border-dark border-2">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <h5>Question</h5>
                 </div>
-                <div class="col-2">
-                    Views
+                <div class="col-4">
+                    My answer
                 </div>
                 <div class="col-2 ps-1">
-                    Answers
+                    votes
                 </div>
                 <div class="col-2">
                     Options
@@ -31,38 +26,37 @@
             </div>
         </div>
         <div class="col-12 mt-3">
-            {{#each questions}}
+            {{#each answers}}
             <div class="row">
-                <div class="col-6">
-                    <a href="details-question={{id}}" class="text-decoration-none">{{question}}</a>
+                <div class="col-4">
+                    <a href="details-question={{fk_question}}" class="text-decoration-none">{{question}}</a>
+                </div>
+                <div class="col-4">
+                    <p>{{answer}}</p>
                 </div>
                 <div class="col-2">
-                    <p>{{views}}</p>
-                </div>
-                <div class="col-2">
-                    <p>{{answers}}</p>
+                    <p>{{votes}}</p>
                 </div>
                 <div class="col-2">
                     <div class="btn-group-vertical">
                         <button class="btn btn-dark rounded-pill h-auto mb-2" data-bs-toggle="modal"
-                            data-bs-target="#editQuestion{{id}}"><i class="fas fa-edit"></i> Edit</button>
+                            data-bs-target="#editAnswer{{id}}"><i class="fas fa-edit"></i> Edit</button>
                         <button class="btn btn-danger rounded-pill h-auto mb-2" data-bs-toggle="modal"
-                            data-bs-target="#deleteQuestion{{id}}"><i class="fas fa-trash-alt"></i>
+                            data-bs-target="#deleteAnswer{{id}}"><i class="fas fa-trash-alt"></i>
                             Delete</button>
                     </div>
                 </div>
             </div>
-            {{>userComponents/questionModals/edit}}
-            {{>userComponents/questionModals/delete}}
+            {{>userComponents/answerModals/edit}}
+            {{>userComponents/answerModals/delete}}
             {{/each}}
         </div>
     </div>
     {{else}}
     <div class="my-5 text-center">
-        <h2>You have no questions posted</h2>
-        <p>¡Post a new question!</p>
+        <h2>You have no answers posted</h2>
+        <p>¡Post a new answer!</p>
     </div>
     {{/if}}
     <br>
 </div>
-{{>userComponents/questionModals/add}}

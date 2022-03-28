@@ -18,12 +18,12 @@ controller.renderQuestions = async (req, res) => {
 controller.renderDetailsQuestion = async (req, res) => {
     const { id } = req.params
     const question = await connection.query(
-        `select u.username, q.question, q.description, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
+        `select q.id, u.username, q.question, q.description, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
     const views = await connection.query(`select count(*) as answers from answers where fk_question = ${id}`)
     const answers = await connection.query(
-        `select a.id, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id`)
+        `select a.id, a.fk_user, '${req.user.id}' as user, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id ORDER BY votes DESC`)
     res.render('user/detailsQuestion', {
-        answers, username: question[0].username, question: question[0].question, description: question[0].description, category: question[0].category, views: views[0].answers
+        answers, idquestion: question[0].id, username: question[0].username, question: question[0].question, description: question[0].description, category: question[0].category, views: views[0].answers
     })
 }
 
@@ -56,7 +56,7 @@ controller.editQuestion = async (req, res) => {
         description
     }
     try {
-        if (User) {
+        if (User.length < 1) {
             await connection.query('update questions set ? where id = ?', [newQuestion, id])
             req.flash('success_msg', 'Question edited successfully')
             res.redirect('/myquestions')
@@ -74,8 +74,9 @@ controller.editQuestion = async (req, res) => {
 controller.deleteQuestion = async (req, res) => {
     const { id } = req.params
     const User = await connection.query(`select * from questions where id = ${id} && fk_user = ${req.user.id}`)
+    console.log(User)
     try {
-        if (User) {
+        if (User.length < 1) {
             await connection.query('delete from questions where id = ?', [id])
             req.flash('success_msg', 'Question deleted successfully')
             res.redirect('/myquestions')

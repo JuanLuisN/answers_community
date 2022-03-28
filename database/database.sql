@@ -56,7 +56,8 @@ create table answers (
 );
 
 create table answers_votes(
-    fk_answer int primary key,
+    id int primary key auto_increment,
+    fk_answer int,
     fk_question int,
     fk_user int,
     foreign key(fk_user)references users(id),
@@ -65,6 +66,7 @@ create table answers_votes(
 );
 
 create table questions_views(
+    id int primary key auto_increment,
     fk_user int primary key,
     fk_question int,
     foreign key(fk_user)references users(id),
