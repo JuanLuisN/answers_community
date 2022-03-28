@@ -5,7 +5,7 @@ const controller = {}
 controller.renderQuestions = async (req, res) => {
     const categories = await connection.query('select * from categories')
     const questions = await connection.query(
-        `select q.id, q.fk_user, q.question, q.description, q.views, 'answers' as answers, c.category from questions q, categories c where q.fk_user = ${req.user.id} && q.fk_category = c.id`)
+        `select q.id, q.fk_user, q.question, q.description, q.image, q.views, 'answers' as answers, c.category from questions q, categories c where q.fk_user = ${req.user.id} && q.fk_category = c.id`)
     for (let i = 0; i < questions.length; i++) {
         const respuestas = await connection.query(`select count(*) as answers from answers where fk_question = ${questions[i].id}`)
         questions[i].answers = respuestas[0].answers
@@ -37,18 +37,19 @@ controller.renderDetailsQuestion = async (req, res) => {
             `select a.id, a.fk_user, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id ORDER BY votes DESC`)
     }
     const question = await connection.query(
-        `select q.id, u.username, q.question, q.description, q.views, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
+        `select q.id, u.username, q.question, q.description, q.image, q.views, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
     res.render('user/detailsQuestion', {
-        answers, idquestion: question[0].id, username: question[0].username, question: question[0].question, description: question[0].description, category: question[0].category, views: question[0].views
+        answers, idquestion: question[0].id, username: question[0].username, question: question[0].question, description: question[0].description, image: question[0].image, category: question[0].category, views: question[0].views
     })
 }
 
 controller.saveQuestion = async (req, res) => {
-    const { question, description, fk_category } = req.body
+    const { question, description, image, fk_category } = req.body
     const newQuestion = {
         fk_user: req.user.id,
         question,
         description,
+        image,
         views: 0,
         fk_category
     }
@@ -65,11 +66,12 @@ controller.saveQuestion = async (req, res) => {
 
 controller.editQuestion = async (req, res) => {
     const { id } = req.params
-    const { question, description } = req.body
+    const { question, description, image } = req.body
     const User = await connection.query(`select * from questions where id = ${id} && fk_user = ${req.user.id}`)
     const newQuestion = {
         question,
-        description
+        description,
+        image
     }
     try {
         if (User.length < 1) {
@@ -112,7 +114,7 @@ controller.searchQuestion = async (req, res) => {
         const { search } = req.body;
         const categories = await connection.query('select * from categories')
         const questions = await connection.query(
-            `select q.id, q.fk_user, q.question, q.description, q.views, 'answers' as answers, c.category from questions q, categories c where q.fk_user = ${req.user.id} && q.fk_category = c.id && q.question like '%${search.toLowerCase()}%'`)
+            `select q.id, q.fk_user, q.question, q.description, q.image, q.views, 'answers' as answers, c.category from questions q, categories c where q.fk_user = ${req.user.id} && q.fk_category = c.id && q.question like '%${search.toLowerCase()}%'`)
         for (let i = 0; i < questions.length; i++) {
         const respuestas = await connection.query(`select count(*) as answers from answers where fk_question = ${questions[i].id}`)
         questions[i].answers = respuestas[0].answers

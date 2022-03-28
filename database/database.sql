@@ -39,6 +39,7 @@ create table questions (
     fk_user int,
     question varchar(100),
     description TEXT,
+    image varchar(500),
     views int,
     fk_category int,
     foreign key(fk_user)references users(id),
