@@ -17,13 +17,29 @@ controller.renderQuestions = async (req, res) => {
 
 controller.renderDetailsQuestion = async (req, res) => {
     const { id } = req.params
+    let answers
+    if(req.user) {
+        answers = await connection.query(
+            `select a.id, a.fk_user, '${req.user.id}' as user, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id ORDER BY votes DESC`)
+        const viewExists = await connection.query(`select * from questions_views where fk_user = ${req.user.id} && fk_question = ${id}`)
+        if (viewExists.length < 1) {
+            const newView = {
+                fk_user: req.user.id,
+                fk_question: id
+            }
+            const getViews = await connection.query(`select * from questions where id = ${id}`)
+            const views = parseInt(getViews[0].views) + 1
+            await connection.query(`update questions set views = ${views} where id = ${id}`)
+            await connection.query('insert into questions_views set ?', [newView])
+        }
+    } else {
+        answers = await connection.query(
+            `select a.id, a.fk_user, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id ORDER BY votes DESC`)
+    }
     const question = await connection.query(
-        `select q.id, u.username, q.question, q.description, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
-    const views = await connection.query(`select count(*) as answers from answers where fk_question = ${id}`)
-    const answers = await connection.query(
-        `select a.id, a.fk_user, '${req.user.id}' as user, u.username, a.fk_question, a.answer, a.votes from answers a, users u where fk_question = ${id} && a.fk_user = u.id ORDER BY votes DESC`)
+        `select q.id, u.username, q.question, q.description, q.views, c.category from questions q, categories c, users u where q.id = ${id} && q.fk_user = u.id && q.fk_category = c.id`)
     res.render('user/detailsQuestion', {
-        answers, idquestion: question[0].id, username: question[0].username, question: question[0].question, description: question[0].description, category: question[0].category, views: views[0].answers
+        answers, idquestion: question[0].id, username: question[0].username, question: question[0].question, description: question[0].description, category: question[0].category, views: question[0].views
     })
 }
 
@@ -39,11 +55,11 @@ controller.saveQuestion = async (req, res) => {
     try {
         await connection.query('insert into questions set ?', [newQuestion])
         req.flash('success_msg', 'Question added successfully')
-        res.redirect('/myquestions')
+        res.redirect('back')
     } catch (error) {
         console.log(error)
         req.flash("error_msg", "Something went wrong, try again")
-        res.redirect('/myquestions')
+        res.redirect('back')
     }
 }
 
@@ -89,6 +105,26 @@ controller.deleteQuestion = async (req, res) => {
         req.flash("error_msg", "Something went wrong, try again")
         res.redirect('/myquestions')
     }
+}
+
+controller.searchQuestion = async (req, res) => {
+    try {
+        const { search } = req.body;
+        const categories = await connection.query('select * from categories')
+        const questions = await connection.query(
+            `select q.id, q.fk_user, q.question, q.description, q.views, 'answers' as answers, c.category from questions q, categories c where q.fk_user = ${req.user.id} && q.fk_category = c.id && q.question like '%${search.toLowerCase()}%'`)
+        for (let i = 0; i < questions.length; i++) {
+        const respuestas = await connection.query(`select count(*) as answers from answers where fk_question = ${questions[i].id}`)
+        questions[i].answers = respuestas[0].answers
+        }
+        res.render('user/questions', {
+            questions, categories
+        })
+      } catch (error) {
+        console.log(error);
+        res.redirect('/myquestions')
+      }
+  
 }
 
 

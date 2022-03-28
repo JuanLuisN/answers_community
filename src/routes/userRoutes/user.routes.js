@@ -10,6 +10,7 @@ router.post('/myquestions/add', authMiddleware.isLoggedIn, questionsController.s
 router.post('/myquestions/edit/:id', authMiddleware.isLoggedIn, questionsController.editQuestion)
 router.get('/myquestions/delete/:id', authMiddleware.isLoggedIn, questionsController.deleteQuestion)
 router.get('/details-question=:id', questionsController.renderDetailsQuestion)
+router.post('/myquestions', authMiddleware.isLoggedIn, questionsController.searchQuestion)
 
 router.get('/myanswers', authMiddleware.isLoggedIn, answersController.renderAnswers)
 router.post('/answer/add/:id', authMiddleware.isLoggedIn, answersController.saveAnswer)

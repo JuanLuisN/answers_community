@@ -71,7 +71,6 @@ controller.addVote = async (req, res) => {
         fk_question,
         fk_user: req.user.id
     }
-    console.log(voteExists)
     try {
         if (voteExists.length < 1) {
             const votes = parseInt(getVotes[0].votes) + 1
