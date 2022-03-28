@@ -3,11 +3,12 @@
   {{#if category}}
   <h5 class="mt-2 text-success">Searching questions by category: <span class="text-dark">{{category}}</span></h5>
   {{/if}}
-  {{#if user}}
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    {{#if user}}
     <button class="btn btn-dark me-md-2 rounded-pill" type="button" data-bs-toggle="modal"
       data-bs-target="#addQuestion"><i class="fas fa-plus-square"></i> Post
       question</button>
+    {{/if}}
     <div class="btn-group" role="group">
       <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle rounded-pill"
         data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,7 +22,6 @@
       </ul>
     </div>
   </div>
-  {{/if}}
   <hr>
   <form action="/" method="POST">
     <div class="input-group w-75 mx-auto my-4">
